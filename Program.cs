@@ -9,16 +9,17 @@ Document.Create(document =>
     {
         page.Size(PageSizes.A4);
         page.Margin(1.5f, Unit.Centimetre);
-        page.PageColor(Colors.White);
-        page.DefaultTextStyle(f => f.FontSize(9));
+        page.PageColor("#F2F7FA");
+        page.DefaultTextStyle(f => f.FontSize(10));
 
         page.Header()
             .Row(row =>
             {
                 row.RelativeItem(2)
                     .AlignLeft()
-                    .Element(ItemStyle)
-                    .Text("Nº total de viaturas no acidente: ________");
+                    .Width(114)
+                    .Height(104)
+                    .Image("logo.png");
 
                 row.RelativeItem(1)
                     .Element(ItemStyle)
@@ -26,7 +27,12 @@ Document.Create(document =>
 
                 row.RelativeItem(1)
                     .Element(ItemStyle)
-                    .Text("Folha 1/______");
+                    .Text(text =>
+                    {
+                        text.Span("Folha ");
+                        text.CurrentPageNumber();
+                        text.Span("/______");
+                    });
 
                 static IContainer ItemStyle(IContainer container) => container
                     .AlignRight()
@@ -50,34 +56,34 @@ Document.Create(document =>
                         });
 
                         table.Cell().Element(CellStyle).Text("");
-                        table.Cell().Element(CellStyle).Text("Secção Corrente");
+                        table.Cell().Element(CellStyle).Text("Seção Atual");
                         table.Cell().Row(row =>
                         {
-                            row.RelativeItem().Element(CellStyle).Text("AE / IP / IC / EN: _______");
+                            row.RelativeItem().Element(CellStyle).Text("A1 / A2 / A3 / A4: _______");
                             row.ConstantItem(1).LineVertical(1);
-                            row.RelativeItem().Element(CellStyle).Text("KM: ________ + ________");
+                            row.RelativeItem().Element(CellStyle).Text("DS: ________ + ________");
                         });
-                        table.Cell().Element(CellStyle).Text("Sentido: _____________________");
+                        table.Cell().Element(CellStyle).Text("Localidade: _____________________");
 
                         table.Cell().Element(CellStyle).Text("");
-                        table.Cell().Element(CellStyle).Text("Portagem");
+                        table.Cell().Element(CellStyle).Text("Danos");
                         table.Cell().Element(CellStyle).Text("");
-                        table.Cell().Element(CellStyle).Text("Via nº: _______________________");
+                        table.Cell().Element(CellStyle).Text("Visíveis: _______________________");
 
                         table.Cell().Element(CellStyle).Text("");
-                        table.Cell().Element(CellStyle).Text("Nó");
+                        table.Cell().Element(CellStyle).Text("Quartos");
                         table.Cell().Element(CellStyle).Text("");
-                        table.Cell().Element(CellStyle).Text("Ramo: _______________________");
+                        table.Cell().Element(CellStyle).Text("Visíveis: _______________________");
 
                         table.Cell().Element(CellStyle).Text("");
-                        table.Cell().Element(CellStyle).Text("Acesso rede exterior");
+                        table.Cell().Element(CellStyle).Text("Banheiros");
                         table.Cell().Element(CellStyle).Text("");
-                        table.Cell().Element(CellStyle).Text("Sentido: _____________________");
+                        table.Cell().Element(CellStyle).Text("Visíveis: _____________________");
 
                         table.Cell().Element(CellStyle).Text("");
-                        table.Cell().Element(CellStyle).Text("Área de Serviço / Repouso");
+                        table.Cell().Element(CellStyle).Text("Área de Serviço");
                         table.Cell().Element(CellStyle).Text("");
-                        table.Cell().Element(CellStyle).Text("Sentido: _____________________");
+                        table.Cell().Element(CellStyle).Text("Visíveis: _____________________");
 
                         static IContainer CellStyle(IContainer container) => container
                             .Border(1)
@@ -104,7 +110,7 @@ Document.Create(document =>
                         table.Header(header =>
                         {
                             header.Cell().ColumnSpan(8).Element(HeaderStyle).Row(row =>
-                                row.RelativeItem().Element(TextStyle).Text("Actividades AR"));
+                                row.RelativeItem().Element(TextStyle).Text("Informações Extras"));
 
                             static IContainer TextStyle(IContainer container) => container
                                 .DefaultTextStyle(ts => ts.ExtraBold())
@@ -116,16 +122,16 @@ Document.Create(document =>
                                 .BorderColor(Colors.Black);
                         });
 
-                        table.Cell().Element(CellStyle).Text("Hora Comunicação");
+                        table.Cell().Element(CellStyle).Text("Hora da Chegada");
                         table.Cell().Element(CenteredCellStyle).Text(":");
-                        table.Cell().Element(CellStyle).Text("Origem Participação");
+                        table.Cell().Element(CellStyle).Text("Acompanhado");
                         table.Cell().Element(CenteredCellStyle).Text("");
-                        table.Cell().Element(CellStyle).Text("Hora Acidente");
+                        table.Cell().Element(CellStyle).Text("Hora da Saída");
                         table.Cell().Element(CenteredCellStyle).Text(":");
-                        table.Cell().Element(CellStyle).Text("Chegada Local (AR)");
+                        table.Cell().Element(CellStyle).Text("Início da Vistoria");
                         table.Cell().Element(CenteredCellStyle).Text(":");
 
-                        table.Cell().Element(CellStyle).Text("Situação Normal às");
+                        table.Cell().Element(CellStyle).Text("Final da Vistoria");
                         table.Cell().Element(CenteredCellStyle).Text(":");
                         table.Cell().ColumnSpan(6).Element(CellStyle).Text("Obs");
 
@@ -154,7 +160,7 @@ Document.Create(document =>
                     table.Header(header =>
                     {
                         header.Cell().ColumnSpan(4).Element(HeaderStyle).Row(row =>
-                            row.RelativeItem().Element(TextStyle).Text("Meios externos à Brisa"));
+                            row.RelativeItem().Element(TextStyle).Text("Análise"));
 
                         static IContainer TextStyle(IContainer container) => container
                             .DefaultTextStyle(ts => ts.ExtraBold())
@@ -167,26 +173,16 @@ Document.Create(document =>
                     });
 
                     table.Cell().Element(CenteredCellStyle).Text("");
-                    table.Cell().Element(CenteredCellStyle).Text("Hora Chegada");
-                    table.Cell().Element(CenteredCellStyle).Text("Nome / Destacamento / Corporação");
-                    table.Cell().Element(CenteredCellStyle).Text("Actividades Efectuadas");
+                    table.Cell().Element(CenteredCellStyle).Text("Campo 1");
+                    table.Cell().Element(CenteredCellStyle).Text("Campo 2");
+                    table.Cell().Element(CenteredCellStyle).Text("Campo 3");
 
-                    table.Cell().Element(CellStyle).Text("GNR / PS");
+                    table.Cell().Element(CellStyle).Text("APD / TR");
                     table.Cell().Element(CenteredCellStyle).Text(":");
                     table.Cell().Element(CellStyle).Text("");
                     table.Cell().Element(CellStyle).Text("");
 
-                    table.Cell().Element(CellStyle).Text("Ambulância");
-                    table.Cell().Element(CenteredCellStyle).Text(":");
-                    table.Cell().Element(CellStyle).Text("");
-                    table.Cell().Element(CellStyle).Text("");
-
-                    table.Cell().Element(CellStyle).Text("=");
-                    table.Cell().Element(CenteredCellStyle).Text(":");
-                    table.Cell().Element(CellStyle).Text("");
-                    table.Cell().Element(CellStyle).Text("");
-
-                    table.Cell().Element(CellStyle).Text("Bombeiros");
+                    table.Cell().Element(CellStyle).Text("Campo 4");
                     table.Cell().Element(CenteredCellStyle).Text(":");
                     table.Cell().Element(CellStyle).Text("");
                     table.Cell().Element(CellStyle).Text("");
@@ -196,12 +192,22 @@ Document.Create(document =>
                     table.Cell().Element(CellStyle).Text("");
                     table.Cell().Element(CellStyle).Text("");
 
-                    table.Cell().Element(CellStyle).Text("BCI");
+                    table.Cell().Element(CellStyle).Text("Campo 5");
                     table.Cell().Element(CenteredCellStyle).Text(":");
                     table.Cell().Element(CellStyle).Text("");
                     table.Cell().Element(CellStyle).Text("");
 
-                    table.Cell().Element(CellStyle).Text("Outros");
+                    table.Cell().Element(CellStyle).Text("=");
+                    table.Cell().Element(CenteredCellStyle).Text(":");
+                    table.Cell().Element(CellStyle).Text("");
+                    table.Cell().Element(CellStyle).Text("");
+
+                    table.Cell().Element(CellStyle).Text("Campo 6");
+                    table.Cell().Element(CenteredCellStyle).Text(":");
+                    table.Cell().Element(CellStyle).Text("");
+                    table.Cell().Element(CellStyle).Text("");
+
+                    table.Cell().Element(CellStyle).Text("Campo 7");
                     table.Cell().Element(CenteredCellStyle).Text(":");
                     table.Cell().Element(CellStyle).Text("");
                     table.Cell().Element(CellStyle).Text("");
@@ -247,16 +253,16 @@ Document.Create(document =>
                         table.Header(header =>
                         {
                             header.Cell().Row(row =>
-                                row.RelativeItem().Element(TextStyle).Text("Identificação do aciente"));
+                                row.RelativeItem().Element(TextStyle).Text("Campo 8"));
                             
                             header.Cell().Row(row =>
-                                row.RelativeItem().Element(TextStyle).Text("Circunstancias externas"));
+                                row.RelativeItem().Element(TextStyle).Text("Campo 9"));
                             
                             header.Cell().Row(row =>
-                                row.RelativeItem().Element(TextStyle).Text("6. Natureza do aciente"));
+                                row.RelativeItem().Element(TextStyle).Text("Campo 10"));
                             
                             header.Cell().Row(row =>
-                                row.RelativeItem().Element(TextStyle).Text("7. Causas prováveis do aciente"));
+                                row.RelativeItem().Element(TextStyle).Text("Campo  11"));
 
                             static IContainer TextStyle(IContainer container) => container
                                 .DefaultTextStyle(ts => ts.ExtraBold())
@@ -266,393 +272,393 @@ Document.Create(document =>
                         
                         table.Cell().Element(CellStyle).Column(column1 =>
                         {
-                            column1.Item().Text("1. Via");
+                            column1.Item().Text("Campo 11");
                             column1.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Berma direita");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 12");
                             });
                             column1.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Lentos");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 13");
                             });
                             column1.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Direita");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 14");
                             });
                             column1.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Central Direita");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 15");
                             });
                             column1.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Central");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 16");
                             });
                             column1.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Central Esquerda");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 17");
                             });
                             column1.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Esquerda");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 18");
                             });
                             column1.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Berma Esquerda");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 19");
                             });
                             column1.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Única");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 20");
                             });
                             column1.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Abrandamento/acelera");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 21");
                             });
                             column1.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Não identificada");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 22");
                             });
                             
-                            column1.Item().PaddingTop(10).Text("2. Zona");
+                            column1.Item().PaddingTop(10).Text("Campo 23");
                             column1.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Secção Corrente");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 24");
                             });
                             column1.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Ramo (A, B, C...)");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 25");
                             });
                             column1.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Acesso à Portagem");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 26");
                             });
                             column1.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Portagem Via Verde");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 27");
                             });
                             column1.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Portagem Via Manual");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 28");
                             });
                             column1.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Portagem Zona Garrafão");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 29");
                             });
                             column1.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Acesso exterior");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 30");
                             });
                             column1.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Área de serviço / repouso");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 31");
                             });
                             column1.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Obtas: ____________");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 32");
                             });
                             column1.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Tuneis");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 33");
                             });
                             column1.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Outra: ____________");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 34");
                             });
                             column1.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Não identificada");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
                             });
                         });
                         
                         table.Cell().Element(CellStyle).Column(column2 =>
                         {
-                            column2.Item().Text("3. Factores atmosféricos");
+                            column2.Item().Text("Campo 36");
                             column2.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Bom tempo");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
                             });
                             column2.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Chuva");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
                             });
                             column2.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Vento forte");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
                             });
                             column2.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Chuva e vento forte");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
                             });
                             column2.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Nevoeiro");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
                             });
                             column2.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Granizo");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
                             });
                             column2.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Neve");
-                            });
-                            
-                            
-                            column2.Item().PaddingTop(10).Text("4. Luminosidade");
-                            column2.Item().Element(ItemStyle).Row(row =>
-                            {
-                                row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Pleno dia");
-                            });
-                            column2.Item().Element(ItemStyle).Row(row =>
-                            {
-                                row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Crepúsculo / Aurora");
-                            });
-                            column2.Item().Element(ItemStyle).Row(row =>
-                            {
-                                row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Noite escura");
-                            });
-                            column2.Item().Element(ItemStyle).Row(row =>
-                            {
-                                row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Noite com luar");
-                            });
-                            column2.Item().Element(ItemStyle).Row(row =>
-                            {
-                                row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Zona com iluminação");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
                             });
                             
                             
-                            column2.Item().PaddingTop(10).Text("5. Estado do piso");
+                            column2.Item().PaddingTop(10).Text("Campo 35");
                             column2.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Seco e limpo");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
                             });
                             column2.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Molhado");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
                             });
                             column2.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Gelo / Geada / Neve");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
                             });
                             column2.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Gravilha / Areia");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
                             });
                             column2.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Óleo / Gordura");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
+                            });
+                            
+                            
+                            column2.Item().PaddingTop(10).Text("Campo 35");
+                            column2.Item().Element(ItemStyle).Row(row =>
+                            {
+                                row.ConstantItem(15).Element(BoxStyle).Text(" ");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
                             });
                             column2.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Outro: ____________");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
+                            });
+                            column2.Item().Element(ItemStyle).Row(row =>
+                            {
+                                row.ConstantItem(15).Element(BoxStyle).Text(" ");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
+                            });
+                            column2.Item().Element(ItemStyle).Row(row =>
+                            {
+                                row.ConstantItem(15).Element(BoxStyle).Text(" ");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
+                            });
+                            column2.Item().Element(ItemStyle).Row(row =>
+                            {
+                                row.ConstantItem(15).Element(BoxStyle).Text(" ");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
+                            });
+                            column2.Item().Element(ItemStyle).Row(row =>
+                            {
+                                row.ConstantItem(15).Element(BoxStyle).Text(" ");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
                             });
                         });
                         
                         table.Cell().Element(CellStyle).Column(column3 =>
                         {
-                            column3.Item().Text("Colisão entre veículos");
+                            column3.Item().Text("Campo 35");
                             column3.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Traseira");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
                             });
                             column3.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Lateral");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
                             });
                             column3.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Frontal");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
                             });
                             column3.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Choque em cadeia");
-                            });
-                            
-                            
-                            column3.Item().PaddingTop(10).Text("Colisão com infraestrutura");
-                            column3.Item().Element(ItemStyle).Row(row =>
-                            {
-                                row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Guardas seg. dta.");
-                            });
-                            column3.Item().Element(ItemStyle).Row(row =>
-                            {
-                                row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Guardas seg. esq.");
-                            });
-                            column3.Item().Element(ItemStyle).Row(row =>
-                            {
-                                row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Guardas seg. esq. transposição");
-                            });
-                            column3.Item().Element(ItemStyle).Row(row =>
-                            {
-                                row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Perfil betão dir.");
-                            });
-                            column3.Item().Element(ItemStyle).Row(row =>
-                            {
-                                row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Perfil betão esq.");
-                            });
-                            column3.Item().Element(ItemStyle).Row(row =>
-                            {
-                                row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Perfil betão esq. transposição");
-                            });
-                            column3.Item().Element(ItemStyle).Row(row =>
-                            {
-                                row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Talude");
-                            });
-                            column3.Item().Element(ItemStyle).Row(row =>
-                            {
-                                row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Sinalização");
-                            });
-                            
-                            column3.Item().PaddingTop(10).Text("Outras Colisões");
-                            column3.Item().Element(ItemStyle).Row(row =>
-                            {
-                                row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Animal");
-                            });
-                            column3.Item().Element(ItemStyle).Row(row =>
-                            {
-                                row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Peão");
-                            });
-                            column3.Item().Element(ItemStyle).Row(row =>
-                            {
-                                row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Obj/Obst");
-                            });
-                            column3.Item().Element(ItemStyle).Row(row =>
-                            {
-                                row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Projecção");
-                            });
-                            column3.Item().Element(ItemStyle).Row(row =>
-                            {
-                                row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Veiculo parado na berma");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
                             });
                             
                             
-                            column3.Item().PaddingTop(10).Text("Outra Natureza");
+                            column3.Item().PaddingTop(10).Text("Campo 35");
                             column3.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Despiste");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
                             });
                             column3.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Capotamento");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
                             });
                             column3.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Arremesso");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
                             });
                             column3.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Outros: ____________");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
+                            });
+                            column3.Item().Element(ItemStyle).Row(row =>
+                            {
+                                row.ConstantItem(15).Element(BoxStyle).Text(" ");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
+                            });
+                            column3.Item().Element(ItemStyle).Row(row =>
+                            {
+                                row.ConstantItem(15).Element(BoxStyle).Text(" ");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
+                            });
+                            column3.Item().Element(ItemStyle).Row(row =>
+                            {
+                                row.ConstantItem(15).Element(BoxStyle).Text(" ");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
+                            });
+                            column3.Item().Element(ItemStyle).Row(row =>
+                            {
+                                row.ConstantItem(15).Element(BoxStyle).Text(" ");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
+                            });
+                            
+                            column3.Item().PaddingTop(10).Text("Campo 35");
+                            column3.Item().Element(ItemStyle).Row(row =>
+                            {
+                                row.ConstantItem(15).Element(BoxStyle).Text(" ");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
+                            });
+                            column3.Item().Element(ItemStyle).Row(row =>
+                            {
+                                row.ConstantItem(15).Element(BoxStyle).Text(" ");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
+                            });
+                            column3.Item().Element(ItemStyle).Row(row =>
+                            {
+                                row.ConstantItem(15).Element(BoxStyle).Text(" ");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
+                            });
+                            column3.Item().Element(ItemStyle).Row(row =>
+                            {
+                                row.ConstantItem(15).Element(BoxStyle).Text(" ");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
+                            });
+                            column3.Item().Element(ItemStyle).Row(row =>
+                            {
+                                row.ConstantItem(15).Element(BoxStyle).Text(" ");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
+                            });
+                            
+                            
+                            column3.Item().PaddingTop(10).Text("Campo 35");
+                            column3.Item().Element(ItemStyle).Row(row =>
+                            {
+                                row.ConstantItem(15).Element(BoxStyle).Text(" ");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
+                            });
+                            column3.Item().Element(ItemStyle).Row(row =>
+                            {
+                                row.ConstantItem(15).Element(BoxStyle).Text(" ");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
+                            });
+                            column3.Item().Element(ItemStyle).Row(row =>
+                            {
+                                row.ConstantItem(15).Element(BoxStyle).Text(" ");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
+                            });
+                            column3.Item().Element(ItemStyle).Row(row =>
+                            {
+                                row.ConstantItem(15).Element(BoxStyle).Text(" ");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
                             });
                         });
                         
                         table.Cell().Element(CellStyle).Column(column4 =>
                         {
-                            column4.Item().Text("Factores humanos");
-                            column4.Item().Text("1. Via");
+                            column4.Item().Text("Campo 35");
+                            column4.Item().Text("Campo 35");
                             column4.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Sonolencia Adormecimento");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
                             });
                             column4.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Sob efeito de alcool");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
                             });
                             column4.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Doença subita");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
                             });
                             column4.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Distração");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
                             });
                             column4.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Incumprimento sinalização");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
                             });
                             column4.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Velocidade excessiva");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
                             });
                             column4.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Excesso de velocidade");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
                             });
                             column4.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Manobra incorrecta");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
                             });
                             column4.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Circulação em contramão");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
                             });
                             
                             
@@ -660,68 +666,68 @@ Document.Create(document =>
                             column4.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Rebentamento de pneu");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
                             });
                             column4.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Avaria mecânica / elétrica");
-                            });
-                            
-                            
-                            column4.Item().PaddingTop(10).Text("Envolvente");
-                            column4.Item().Element(ItemStyle).Row(row =>
-                            {
-                                row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Obstaculo na via");
-                            });
-                            column4.Item().Element(ItemStyle).Row(row =>
-                            {
-                                row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Deficiencia do piso");
-                            });
-                            column4.Item().Element(ItemStyle).Row(row =>
-                            {
-                                row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Gravilha / Areia");
-                            });
-                            column4.Item().Element(ItemStyle).Row(row =>
-                            {
-                                row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Óleo gordura");
-                            });
-                            column4.Item().Element(ItemStyle).Row(row =>
-                            {
-                                row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Gelo / Geada / Neve");
-                            });
-                            column4.Item().Element(ItemStyle).Row(row =>
-                            {
-                                row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Retenção de Agua");
-                            });
-                            column4.Item().Element(ItemStyle).Row(row =>
-                            {
-                                row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Outros: __________");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
                             });
                             
                             
-                            column4.Item().PaddingTop(10).Text("Outras Causas");
+                            column4.Item().PaddingTop(10).Text("Campo 35");
                             column4.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Encadeamento");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
                             });
                             column4.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Outros: ____________");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
                             });
                             column4.Item().Element(ItemStyle).Row(row =>
                             {
                                 row.ConstantItem(15).Element(BoxStyle).Text(" ");
-                                row.RelativeItem().Element(LabelStyle).Text("Não identificada");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
+                            });
+                            column4.Item().Element(ItemStyle).Row(row =>
+                            {
+                                row.ConstantItem(15).Element(BoxStyle).Text(" ");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
+                            });
+                            column4.Item().Element(ItemStyle).Row(row =>
+                            {
+                                row.ConstantItem(15).Element(BoxStyle).Text(" ");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
+                            });
+                            column4.Item().Element(ItemStyle).Row(row =>
+                            {
+                                row.ConstantItem(15).Element(BoxStyle).Text(" ");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
+                            });
+                            column4.Item().Element(ItemStyle).Row(row =>
+                            {
+                                row.ConstantItem(15).Element(BoxStyle).Text(" ");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
+                            });
+                            
+                            
+                            column4.Item().PaddingTop(10).Text("Campo 35");
+                            column4.Item().Element(ItemStyle).Row(row =>
+                            {
+                                row.ConstantItem(15).Element(BoxStyle).Text(" ");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
+                            });
+                            column4.Item().Element(ItemStyle).Row(row =>
+                            {
+                                row.ConstantItem(15).Element(BoxStyle).Text(" ");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
+                            });
+                            column4.Item().Element(ItemStyle).Row(row =>
+                            {
+                                row.ConstantItem(15).Element(BoxStyle).Text(" ");
+                                row.RelativeItem().Element(LabelStyle).Text("Campo 35");
                             });
                         });
 
@@ -737,15 +743,6 @@ Document.Create(document =>
                         static IContainer LabelStyle(IContainer container) => container
                             .PaddingLeft(5);
                     });
-
-                // column.Item()
-                //     .PaddingVertical(15)
-                //     .BorderTop(1)
-                //     .BorderBottom(1)
-                //     .BorderColor(Colors.Black)
-                //     .Table(table =>
-                //     {
-                //     });
             });
     });
 }).ShowInPreviewer();
